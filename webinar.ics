@@ -1,0 +1,25 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Mama Investor//Webinar Reveal//HE
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:webinar-reveal-20260811@mominvest.co.il
+DTSTAMP:20260807T000000Z
+DTSTART:20260811T173000Z
+DTEND:20260811T183000Z
+SUMMARY:שידור חשיפה - יש לך כבר נכס ששווה כסף | אמא משקיעה
+DESCRIPTION:שידור חי וחד פעמי עם עדי סומך. הלינק לשידור מחכה לך בקבוצת הוואטסאפ: https://chat.whatsapp.com/G1k7GSeSSYa7ytiA1gUo9d
+LOCATION:זום (הלינק בקבוצת הוואטסאפ)
+BEGIN:VALARM
+TRIGGER:-PT2H
+ACTION:DISPLAY
+DESCRIPTION:השידור של אמא משקיעה מתחיל בעוד שעתיים
+END:VALARM
+BEGIN:VALARM
+TRIGGER:-PT15M
+ACTION:DISPLAY
+DESCRIPTION:השידור מתחיל בעוד 15 דקות
+END:VALARM
+END:VEVENT
+END:VCALENDAR

@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>המתנה ששווה כסף | שידור חשיפה — אמא משקיעה</title>
+<meta name="description" content="שידור חשיפה חינמי: איך להפוך את מה שכבר יש בך לערוץ הכנסה נוסף, בלי לעזוב עבודה ובלי לוותר על האמהות.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --canvas:#FBFAF7; --ink:#191A2E; --ink-soft:#6B6B7B;
+    --pink:#EF55A5; --lime:#CCD537; --vista:#8C9EFF; --sky:#BEE0F2;
+    --pink-soft:#FCE1EF; --line:#ECE7DF;
+    --card-shadow:0 18px 40px -28px rgba(25,26,46,.18);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:Heebo,system-ui,Arial,sans-serif;background:var(--canvas);color:var(--ink);line-height:1.7;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 22px}
+  section{padding:clamp(56px,9vw,110px) 0}
+  h1{font-weight:900;letter-spacing:-.02em;font-size:clamp(2.4rem,6vw,4.2rem);line-height:1.05}
+  h2{font-weight:800;letter-spacing:-.02em;font-size:clamp(1.8rem,4.4vw,3rem);line-height:1.12}
+  h3{font-weight:800;font-size:clamp(1.15rem,2.6vw,1.4rem)}
+  p{font-size:1.06rem}
+  .eyebrow{font-size:.82rem;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--pink)}
+  .btn{display:inline-block;background:var(--pink);color:var(--ink);font-weight:800;font-size:1.08rem;border:0;border-radius:100px;padding:16px 34px;cursor:pointer;text-decoration:none;transition:transform .12s ease, filter .12s ease}
+  .btn:hover{transform:translateY(-1px);filter:brightness(.97)}
+  .btn:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+  .btn-block{display:block;width:100%;text-align:center}
+
+  /* HERO */
+  .hero{background:var(--canvas);padding-top:clamp(40px,6vw,64px)}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:36px;align-items:center}
+  .hero-copy{text-align:right}
+  .hero-media{position:relative}
+  .hero-media img{width:100%;max-width:480px;display:block;margin:0 auto}
+  @media(max-width:760px){
+    .hero{padding-top:20px}
+    .hero-grid{grid-template-columns:1fr;gap:14px}
+    .hero-copy{text-align:center}
+    .hero-media img{max-width:220px}
+    .hero-media{order:-1}
+    .hero .cta-row .btn{display:block;width:100%}
+    .hero .when{width:100%;justify-content:center}
+  }
+  .hero .pill{display:inline-block;background:var(--pink-soft);color:var(--ink);font-weight:700;border-radius:100px;padding:8px 18px;font-size:.95rem;margin-bottom:22px}
+  .hero h1 span{color:var(--pink)}
+  .hero .sub{max-width:660px;margin:22px auto 0;color:var(--ink-soft);font-size:1.18rem}
+  .hero .when{margin:28px auto 0;display:inline-flex;flex-wrap:wrap;gap:10px 20px;justify-content:center;align-items:center;background:#fff;border:1px solid var(--line);border-radius:20px;padding:14px 22px;box-shadow:var(--card-shadow);font-weight:700}
+  .hero .when b{color:var(--pink)}
+  .hero .cta-row{margin-top:30px}
+  .hero .micro{margin-top:14px;color:var(--ink-soft);font-size:.95rem}
+
+  /* SECRETS */
+  .secrets{background:#fff}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:44px}
+  .card{background:var(--canvas);border:1px solid var(--line);border-radius:24px;padding:30px 26px;box-shadow:var(--card-shadow)}
+  .card .num{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:100px;background:var(--pink);color:var(--ink);font-weight:900;font-size:1.1rem;margin-bottom:16px}
+  .card:nth-child(2) .num{background:var(--vista)}
+  .card:nth-child(3) .num{background:var(--lime)}
+  .card p{color:var(--ink-soft);margin-top:8px}
+
+  /* WHO / PROOF */
+  .who{background:var(--vista)}
+  .who h2,.who p{color:var(--ink)}
+  .who .lead{max-width:720px;margin:18px auto 0;text-align:center;font-size:1.15rem}
+  .who .center{text-align:center}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:40px}
+  .stat{background:#fff;border-radius:20px;padding:26px 18px;text-align:center;box-shadow:var(--card-shadow)}
+  .stat b{display:block;font-size:2rem;font-weight:900;color:var(--pink)}
+  .stat span{color:var(--ink-soft);font-size:.98rem}
+
+  /* TESTIMONIALS */
+  .proof{background:#fff}
+  .quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:40px}
+  .quote{background:var(--canvas);border:1px solid var(--line);border-radius:24px;padding:28px 24px;box-shadow:var(--card-shadow);position:relative}
+  .quote:before{content:"״";font-size:3rem;font-weight:900;color:var(--pink);line-height:1;display:block;margin-bottom:6px}
+  .quote p{font-weight:500;font-size:1.05rem}
+  .quote .name{margin-top:14px;color:var(--ink-soft);font-size:.92rem;font-weight:700}
+  @media(max-width:760px){.quotes{grid-template-columns:1fr}}
+
+  /* IMAGE BAND */
+  .band{background:var(--sky)}
+  .band-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:36px;align-items:center}
+  .band img{width:100%;max-width:420px;display:block;margin:0 auto;border-radius:24px}
+  @media(max-width:760px){.band-grid{grid-template-columns:1fr}.band img{max-width:320px}}
+
+  /* FORM */
+  .signup{background:var(--canvas)}
+  .form-card{max-width:560px;margin:36px auto 0;background:#fff;border:1px solid var(--line);border-radius:26px;padding:clamp(26px,5vw,42px);box-shadow:var(--card-shadow)}
+  .form-card label{display:block;font-weight:700;margin:16px 0 6px}
+  .form-card input{width:100%;font-family:inherit;font-size:1.05rem;padding:14px 16px;border:1.5px solid var(--line);border-radius:14px;background:var(--canvas)}
+  .form-card input:focus{outline:none;border-color:var(--pink)}
+  .form-card .btn{margin-top:24px}
+  .consent{margin-top:14px;font-size:.85rem;color:var(--ink-soft);display:flex;gap:8px;align-items:flex-start}
+  .consent input{width:auto;margin-top:5px}
+  /* THANK YOU SCREEN */
+  #success{display:none}
+  .thanks-card{max-width:520px;margin:0 auto;background:#fff;border:1px solid var(--line);border-radius:26px;padding:clamp(26px,6vw,40px) clamp(20px,5vw,36px);box-shadow:var(--card-shadow);text-align:center}
+  .thanks-emoji{font-size:3rem;line-height:1}
+  .thanks-card h2{margin-top:10px}
+  .thanks-sub{color:var(--ink-soft);margin:12px auto 0;max-width:420px}
+  .step{display:flex;gap:14px;text-align:right;background:var(--canvas);border:1px solid var(--line);border-radius:18px;padding:20px 18px;margin-top:22px}
+  .step-num{flex:0 0 auto;width:34px;height:34px;border-radius:100px;background:var(--pink);color:var(--ink);font-weight:900;display:flex;align-items:center;justify-content:center}
+  .step-body{flex:1}
+  .step-body h3{font-size:1.15rem}
+  .step-body p{color:var(--ink-soft);font-size:.98rem;margin-top:4px}
+  .step-body .btn{margin-top:14px}
+  .btn-wa{background:#25D366;color:#fff}
+  .btn-cal{background:var(--vista)}
+  .cal-alt{display:block;margin-top:10px;color:var(--ink-soft);font-size:.9rem;text-decoration:underline}
+  .thanks-foot{margin-top:24px;font-weight:700;line-height:1.5}
+
+  /* STICKY MOBILE CTA */
+  .sticky-cta{display:none}
+  @media(max-width:760px){
+    .sticky-cta{display:block;position:fixed;bottom:0;inset-inline:0;z-index:60;background:rgba(251,250,247,.96);backdrop-filter:blur(6px);border-top:1px solid var(--line);padding:10px 14px calc(10px + env(safe-area-inset-bottom))}
+    .sticky-cta .btn{width:100%;text-align:center;padding:15px}
+    body{padding-bottom:78px}
+    .a11y-btn{bottom:86px}
+  }
+
+  /* FOOTER / LEGAL */
+  footer{background:var(--ink);color:#cfcfe0;padding:44px 0;font-size:.9rem}
+  footer a{color:#fff;text-decoration:underline}
+  footer .legal{max-width:820px;margin:0 auto;text-align:center}
+  footer .legal p{font-size:.9rem;margin-top:10px;color:#cfcfe0}
+  .a11y-btn{position:fixed;bottom:18px;inset-inline-start:18px;z-index:50;width:52px;height:52px;border-radius:100px;background:var(--ink);color:#fff;border:0;font-size:1.4rem;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+  .a11y-btn:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
+
+  @media(max-width:760px){
+    .grid3{grid-template-columns:1fr}
+    .stats{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <span class="pill">🎁 שידור חשיפה חינמי · חי וחד פעמי</span>
+        <h1>יש לך כבר נכס <span>ששווה כסף</span></h1>
+        <p class="sub" style="margin-right:0">איך להפוך משהו שכבר יש בך, ידע, כישרון או ניסיון חיים, לעוד 5,000 עד 20,000 ₪ בחודש. בלי לעזוב עבודה, ובלי לוותר על האמהות.</p>
+        <div class="when">
+          <span>📅 יום שלישי, <b>11.8</b></span>
+          <span>🕘 בשעה <b>20:30</b></span>
+          <span>💻 בזום</span>
+        </div>
+        <div class="cta-row">
+          <a href="#signup" class="btn">אני משריינת מקום לשידור החי</a>
+        </div>
+        <p class="micro">שידור חי אחד בלבד, בלי הקלטה. מה שיקרה שם, קורה רק שם.</p>
+      </div>
+      <div class="hero-media">
+        <img src="assets/hero-gift.png" alt="איור של ידיים פותחות מתנה שממנה צומחים נבט ומטבעות" width="480" height="480">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 SECRETS -->
+<section class="secrets">
+  <div class="wrap">
+    <div style="text-align:center">
+      <span class="eyebrow">מה תגלי בשידור</span>
+      <h2 style="margin-top:12px">3 דברים שישנו את מה שחשבת על הכנסה נוספת</h2>
+    </div>
+    <div class="grid3">
+      <div class="card">
+        <span class="num">1</span>
+        <h3>למה עוד קורס לא יזיז אותך</h3>
+        <p>הידע הוא הדבר הזול בעולם. מה שבאמת חסר זה מסגרת, דיוק וזיקוק. נראה איפה זה נתקע, ומה כן מזיז.</p>
+      </div>
+      <div class="card">
+        <span class="num">2</span>
+        <h3>הנכס שכבר יש בך</h3>
+        <p>את לא צריכה להיות מומחית או מושלמת כדי להתחיל. את כבר יושבת על משהו ששווה כסף. נלמד איך לזהות אותו.</p>
+      </div>
+      <div class="card">
+        <span class="num">3</span>
+        <h3>איך מוכרים לפני שזה גמור</h3>
+        <p>בלי להמר על שנה מהחיים. שעתיים בשבוע, פיילוט קטן שמחזיר את עצמו תוך כדי. הדרך הבטוחה, לא ההימור.</p>
+      </div>
+    </div>
+    <p style="text-align:center;margin-top:36px;color:var(--ink-soft);max-width:640px;margin-inline:auto"><strong style="color:var(--ink)">השידור בשבילך אם</strong> את שכירה או עצמאית עם ידע, מקצוע או ניסיון חיים, ואת רוצה עוד מקור הכנסה שמחובר למי שאת. בלי ניסיון קודם בשיווק, ובלי להפוך למשפיענית.</p>
+  </div>
+</section>
+
+<!-- WHO / PROOF -->
+<section class="who">
+  <div class="wrap">
+    <div class="center">
+      <span class="eyebrow" style="color:var(--ink)">מי מעבירה</span>
+      <h2 style="margin-top:12px">עדי סומך · אמא משקיעה</h2>
+      <p class="lead">את מה שאני מלמדת, עשיתי בעצמי. ומעל חצי מיליון שקל בשנתיים האחרונות מתכניות ליווי הם ההוכחה. לא כי הבנתי הכל מראש, אלא כי לקחתי משהו שכבר היה בי ובניתי אותו נכון. עכשיו תורך.</p>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>חצי מיליון ₪</b><span>מתכניות ליווי בשנתיים</span></div>
+      <div class="stat"><b>90 יום</b><span>מרעיון להצעה שמוכרת</span></div>
+      <div class="stat"><b>שעתיים בשבוע</b><span>בלי לעזוב עבודה</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="proof">
+  <div class="wrap">
+    <div style="text-align:center">
+      <span class="eyebrow">נשים אמיתיות, תוצאות אמיתיות</span>
+      <h2 style="margin-top:12px">מהתכניות של עדי</h2>
+    </div>
+    <div class="quotes">
+      <div class="quote">
+        <p>הגדלתי הכנסות פי 2, קניתי דירה נוספת, והגשמתי חלומות.</p>
+        <span class="name">שושי</span>
+      </div>
+      <div class="quote">
+        <p>איפה הייתי אז ואיפה אני היום. קניתי דירה לילדים שעוד אין לי.</p>
+        <span class="name">שירה</span>
+      </div>
+      <div class="quote">
+        <p>מצאתי מעל 200 אלף ש״ח שלא ידעתי שיש לי.</p>
+        <span class="name">אלומה</span>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:36px">
+      <a href="#signup" class="btn">גם אני רוצה להיות שם</a>
+    </div>
+  </div>
+</section>
+
+<!-- IMAGE BAND -->
+<section class="band">
+  <div class="wrap">
+    <div class="band-grid">
+      <img src="assets/pace-home.png" alt="איור של אישה רגועה על ספה בבית עם מחשב נייד וכוס קפה">
+      <div>
+        <span class="eyebrow" style="color:var(--ink)">בקצב שלך, מהבית</span>
+        <h2 style="margin-top:12px">ערב אחד. שעה אחת. בלי לצאת מהבית.</h2>
+        <p style="margin-top:14px;max-width:520px">אחרי שהילדים נרדמים, עם כוס קפה או תה, שעה אחת שיכולה לפתוח לך דלת חדשה. מגיעות בפיג'מה, יוצאות עם תכנית.</p>
+        <p style="margin-top:14px;max-width:520px"><strong>וטיפ קטן ממני:</strong> אם יש לך בן זוג, שבו לשידור ביחד. כשרואים את אותה תמונה, הרבה יותר קל אחר כך להחליט ביחד על הצעד הבא.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SIGNUP -->
+<section class="signup" id="signup">
+  <div class="wrap">
+    <div id="signup-live">
+      <div style="text-align:center">
+        <span class="eyebrow">שריון מקום</span>
+        <h2 style="margin-top:12px">משאירות פרטים, ומצטרפות לשידור</h2>
+        <p style="max-width:560px;margin:14px auto 0;color:var(--ink-soft)">אחרי ההרשמה תצטרפי לקבוצת וואטסאפ שקטה עם הלינק והתזכורות, כדי שלא תפספסי.</p>
+      </div>
+
+      <div class="form-card">
+        <form id="reg-form">
+          <label for="name">שם מלא</label>
+          <input id="name" name="name" type="text" autocomplete="name" required>
+          <label for="phone">טלפון (לקבוצת התזכורות)</label>
+          <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required>
+          <label for="email">אימייל</label>
+          <input id="email" name="email" type="email" autocomplete="email" required>
+          <label class="consent">
+            <input type="checkbox" id="consent" required>
+            <span>אני מאשרת קבלת תזכורות ועדכונים על השידור והתכנית בהתאם לחוק. אפשר להסיר בכל רגע.</span>
+          </label>
+          <button type="submit" class="btn btn-block">שריון המקום שלי בשידור</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- מסך תודה: 2 פעולות -->
+    <div id="success">
+      <div class="thanks-card">
+        <div class="thanks-emoji">💛</div>
+        <h2>יש! שמרתי לך מקום</h2>
+        <p class="thanks-sub">נשארו 2 צעדים קטנים כדי שבטוח נתראה בשידור החי ב-11.8 בשעה 20:30.</p>
+
+        <div class="step">
+          <span class="step-num">1</span>
+          <div class="step-body">
+            <h3>הצטרפי לקבוצת הוואטסאפ</h3>
+            <p>שם יחכה לך הלינק לשידור, ושם אזכיר לך שלא תפספסי.</p>
+            <a id="wa-join" href="#" class="btn btn-block btn-wa" target="_blank" rel="noopener">➜ להצטרפות לקבוצה</a>
+          </div>
+        </div>
+
+        <div class="step">
+          <span class="step-num">2</span>
+          <div class="step-body">
+            <h3>הוסיפי את השידור ליומן</h3>
+            <p>לחיצה אחת ולא תשכחי. ערב שלישי, 20:30.</p>
+            <a id="cal-ics" href="webinar.ics" class="btn btn-block btn-cal">➜ הוספה ליומן</a>
+            <a id="cal-google" href="#" target="_blank" rel="noopener" class="cal-alt">או פתחי ביומן Google</a>
+          </div>
+        </div>
+
+        <p class="thanks-foot">מתרגשת לפגוש אותך שם 💛<br>עדי</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER + LEGAL -->
+<footer>
+  <div class="wrap legal">
+    <p><strong>אמא משקיעה · עדי סומך</strong></p>
+    <p>
+      <a href="#" id="privacy-link">מדיניות פרטיות</a> ·
+      <a href="#" id="a11y-link">הצהרת נגישות</a> ·
+      <a href="mailto:adinahirr@gmail.com">יצירת קשר</a>
+    </p>
+    <p>הפרטים שלך נשמרים לצורך יצירת קשר בנוגע לשידור ולתכנית בלבד, בהתאם לחוק הגנת הפרטיות ולתיקון 40 לחוק התקשורת. ניתן להסיר את פרטייך מרשימת הדיוור בכל עת.</p>
+    <p>© <span id="year"></span> אמא משקיעה. כל הזכויות שמורות.</p>
+  </div>
+</footer>
+
+<!-- Sticky mobile CTA -->
+<div class="sticky-cta" id="sticky-cta">
+  <a href="#signup" class="btn">שריון מקום לשידור החי ➜</a>
+</div>
+
+<!-- Accessibility button (placeholder for widget) -->
+<button class="a11y-btn" id="a11y-toggle" aria-label="הגדלת גודל טקסט לנגישות" title="נגישות">א</button>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // ==== קישור קבוצת הוואטסאפ של השידור ====
+  var WHATSAPP_GROUP = "https://chat.whatsapp.com/G1k7GSeSSYa7ytiA1gUo9d?mode=gi_t";
+  document.getElementById('wa-join').setAttribute('href', WHATSAPP_GROUP);
+
+  // ==== קישור הוספה ליומן Google (חלופה ל-.ics) ====
+  var GCAL = "https://calendar.google.com/calendar/render?action=TEMPLATE"
+    + "&text=" + encodeURIComponent("שידור חשיפה - יש לך כבר נכס ששווה כסף | אמא משקיעה")
+    + "&dates=20260811T173000Z/20260811T183000Z"
+    + "&details=" + encodeURIComponent("הלינק לשידור מחכה לך בקבוצת הוואטסאפ: " + WHATSAPP_GROUP);
+  document.getElementById('cal-google').setAttribute('href', GCAL);
+
+  // Simple accessibility text-size toggle (basic; can be replaced by full widget)
+  var big=false;
+  document.getElementById('a11y-toggle').addEventListener('click',function(){
+    big=!big; document.documentElement.style.fontSize = big ? '118%' : '';
+  });
+
+  document.getElementById('privacy-link').addEventListener('click',function(e){e.preventDefault();alert('מדיניות פרטיות: פרטייך נשמרים ליצירת קשר בנוגע לשידור ולתכנית בלבד, בהתאם לחוק הגנת הפרטיות. לא יימסרו לצד שלישי. להסרה: adinahirr@gmail.com');});
+  document.getElementById('a11y-link').addEventListener('click',function(e){e.preventDefault();alert('הצהרת נגישות: האתר נבנה בהתאם לתקן ישראלי 5568 ברמת AA. נתקלת בקושי? נשמח לדעת: adinahirr@gmail.com');});
+
+  // ==== שליחת הטופס ====
+  // יעד: רשימת smoove ייעודית ID 1158214 ("וובינר חשיפה - הגדלת הכנסות"),
+  // דרך endpoint פרוקסי בשרת course-portal (המפתח לא נחשף בדפדפן).
+  var SIGNUP_ENDPOINT = "https://academy.mominvest.co.il/webinar-signup";
+  document.getElementById('reg-form').addEventListener('submit', function(e){
+    e.preventDefault();
+    var btn = document.querySelector('#reg-form .btn');
+    btn.disabled = true; btn.textContent = "רק רגע...";
+    var data = {
+      name:  document.getElementById('name').value,
+      phone: document.getElementById('phone').value,
+      email: document.getElementById('email').value
+    };
+    function showSuccess(){
+      document.getElementById('signup-live').style.display='none';
+      document.getElementById('success').style.display='block';
+      var sticky = document.getElementById('sticky-cta'); if(sticky){ sticky.style.display='none'; }
+      document.getElementById('signup').scrollIntoView({behavior:'smooth',block:'start'});
+    }
+    function fail(){
+      btn.disabled = false; btn.textContent = "שמרי לי מקום בשידור 💛";
+      alert("אופס, משהו התעכב. נסי שוב עוד רגע 🙏");
+    }
+    // retry אחד — שרת ה-free של Render לפעמים מתעורר משינה (cold start)
+    fetch(SIGNUP_ENDPOINT, {method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify(data)})
+      .then(function(r){ return r.json(); })
+      .then(function(j){ if(j.ok){ showSuccess(); } else { fail(); } })
+      .catch(function(){
+        setTimeout(function(){
+          fetch(SIGNUP_ENDPOINT, {method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify(data)})
+            .then(function(r){ return r.json(); })
+            .then(function(j){ if(j.ok){ showSuccess(); } else { fail(); } })
+            .catch(fail);
+        }, 4000);
+      });
+  });
+</script>
+</body>
+</html>
