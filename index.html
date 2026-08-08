@@ -357,10 +357,12 @@
   // יעד: רשימת smoove ייעודית ID 1158214 ("וובינר חשיפה - הגדלת הכנסות"),
   // דרך endpoint פרוקסי בשרת course-portal (המפתח לא נחשף בדפדפן).
   var SIGNUP_ENDPOINT = "https://academy.mominvest.co.il/webinar-signup";
+  var WA_GROUP = "https://chat.whatsapp.com/G1k7GSeSSYa7ytiA1gUo9d?mode=gi_t";
   document.getElementById('reg-form').addEventListener('submit', function(e){
     e.preventDefault();
     var btn = document.querySelector('#reg-form .btn');
-    btn.disabled = true; btn.textContent = "רק רגע...";
+    var origText = btn.textContent;
+    btn.disabled = true; btn.textContent = "רק רגע, שומרת לך מקום 💛";
     var data = {
       name:  document.getElementById('name').value,
       phone: document.getElementById('phone').value,
@@ -373,21 +375,31 @@
       document.getElementById('signup').scrollIntoView({behavior:'smooth',block:'start'});
     }
     function fail(){
-      btn.disabled = false; btn.textContent = "שמרי לי מקום בשידור 💛";
-      alert("אופס, משהו התעכב. נסי שוב עוד רגע 🙏");
+      // אחרי כל הניסיונות: לא מאבדים את הלידה — מפנים לקבוצת הוואטסאפ לשמירה ידנית
+      btn.disabled = false; btn.textContent = origText;
+      if (confirm("רגע, השרת שלנו מתעורר וזה לוקח רגע 🙏\nהכי בטוח: הצטרפי עכשיו לקבוצת הוואטסאפ ואני שומרת לך מקום ידנית.\nלפתוח את הקבוצה?")) {
+        window.open(WA_GROUP, "_blank");
+      }
     }
-    // retry אחד — שרת ה-free של Render לפעמים מתעורר משינה (cold start)
-    fetch(SIGNUP_ENDPOINT, {method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify(data)})
-      .then(function(r){ return r.json(); })
-      .then(function(j){ if(j.ok){ showSuccess(); } else { fail(); } })
+    // ניסיונות חוזרים סבלניים — שרת ה-free של Render מתעורר משינה (cold start ~30-60ש')
+    // מטפל גם בשגיאות רשת וגם בתגובות 502/503 בזמן ההתעוררות.
+    var delays = [0, 3000, 6000, 10000, 15000]; // עד ~34 שניות של ניסיונות
+    function attempt(i){
+      var ctrl = ("AbortController" in window) ? new AbortController() : null;
+      var t = ctrl ? setTimeout(function(){ ctrl.abort(); }, 20000) : null;
+      fetch(SIGNUP_ENDPOINT, {
+        method:"POST", headers:{"Content-Type":"application/json"},
+        body: JSON.stringify(data), signal: ctrl ? ctrl.signal : undefined
+      })
+      .then(function(r){ if(t) clearTimeout(t); if(!r.ok){ throw new Error("http "+r.status); } return r.json(); })
+      .then(function(j){ if(j && j.ok){ showSuccess(); } else { throw new Error("not ok"); } })
       .catch(function(){
-        setTimeout(function(){
-          fetch(SIGNUP_ENDPOINT, {method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify(data)})
-            .then(function(r){ return r.json(); })
-            .then(function(j){ if(j.ok){ showSuccess(); } else { fail(); } })
-            .catch(fail);
-        }, 4000);
+        if(t) clearTimeout(t);
+        if(i+1 < delays.length){ setTimeout(function(){ attempt(i+1); }, delays[i+1]); }
+        else { fail(); }
       });
+    }
+    attempt(0);
   });
 </script>
 </body>
