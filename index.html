@@ -383,20 +383,32 @@
     }
     // ניסיונות חוזרים סבלניים — שרת ה-free של Render מתעורר משינה (cold start ~30-60ש')
     // מטפל גם בשגיאות רשת וגם בתגובות 502/503 בזמן ההתעוררות.
-    var delays = [0, 3000, 6000, 10000, 15000]; // עד ~34 שניות של ניסיונות
+    var delays = [0, 3000, 6000, 10000, 12000]; // עד ~30 שניות של ניסיונות
     function attempt(i){
+      var done = false;                                   // שומר-סף: כל ניסיון מסתיים פעם אחת בלבד
       var ctrl = ("AbortController" in window) ? new AbortController() : null;
-      var t = ctrl ? setTimeout(function(){ ctrl.abort(); }, 20000) : null;
+      // שעון-קיר שתמיד קיים — גם בדפדפנים בלי AbortController (וובוויו של אינסטגרם/וואטסאפ).
+      // בלעדיו, fetch שנתקע היה משאיר את הכפתור "רק רגע" לנצח.
+      function moveOn(){
+        if(done) return; done = true;
+        if(ctrl){ try{ ctrl.abort(); }catch(e){} }
+        if(i+1 < delays.length){ setTimeout(function(){ attempt(i+1); }, delays[i+1]); }
+        else { fail(); }
+      }
+      var t = setTimeout(moveOn, 12000);
       fetch(SIGNUP_ENDPOINT, {
         method:"POST", headers:{"Content-Type":"application/json"},
         body: JSON.stringify(data), signal: ctrl ? ctrl.signal : undefined
       })
-      .then(function(r){ if(t) clearTimeout(t); if(!r.ok){ throw new Error("http "+r.status); } return r.json(); })
-      .then(function(j){ if(j && j.ok){ showSuccess(); } else { throw new Error("not ok"); } })
+      .then(function(r){ if(!r.ok){ throw new Error("http "+r.status); } return r.json(); })
+      .then(function(j){
+        if(done) return;
+        if(j && j.ok){ done = true; clearTimeout(t); showSuccess(); }
+        else { throw new Error("not ok"); }
+      })
       .catch(function(){
-        if(t) clearTimeout(t);
-        if(i+1 < delays.length){ setTimeout(function(){ attempt(i+1); }, delays[i+1]); }
-        else { fail(); }
+        if(done) return;
+        clearTimeout(t); moveOn();
       });
     }
     attempt(0);
