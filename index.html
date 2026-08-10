@@ -362,12 +362,28 @@
     e.preventDefault();
     var btn = document.querySelector('#reg-form .btn');
     var origText = btn.textContent;
-    btn.disabled = true; btn.textContent = "רק רגע, שומרת לך מקום 💛";
-    var data = {
-      name:  document.getElementById('name').value,
-      phone: document.getElementById('phone').value,
-      email: document.getElementById('email').value
-    };
+    btn.disabled = true; btn.textContent = "עוד רגע… כמעט שם 💛";
+
+    // גוף form-encoded (לא JSON) — זו "בקשה פשוטה" של CORS ולכן בלי סבב preflight (OPTIONS).
+    // ה-preflight היה נתקע בוובוויו של אינסטגרם/וואטסאפ על חיבור קר. השרת מקבל גם form וגם JSON.
+    var params = new URLSearchParams();
+    params.set("name",  document.getElementById('name').value);
+    params.set("phone", document.getElementById('phone').value);
+    params.set("email", document.getElementById('email').value);
+    var bodyStr = params.toString();
+
+    // רשת-ביטחון: יורים את הלידה ברגע הלחיצה בשליחה שלא תלויה בקריאת תגובת CORS.
+    // sendBeacon נכנס לתור של הדפדפן ונשלח גם אם הוובוויו נתקע על קריאת התשובה.
+    var beaconed = false;
+    try {
+      if (navigator.sendBeacon) {
+        beaconed = navigator.sendBeacon(
+          SIGNUP_ENDPOINT,
+          new Blob([bodyStr], {type: "application/x-www-form-urlencoded"})
+        );
+      }
+    } catch(e){}
+
     function showSuccess(){
       document.getElementById('signup-live').style.display='none';
       document.getElementById('success').style.display='block';
@@ -375,30 +391,30 @@
       document.getElementById('signup').scrollIntoView({behavior:'smooth',block:'start'});
     }
     function fail(){
-      // אחרי כל הניסיונות: לא מאבדים את הלידה — מפנים לקבוצת הוואטסאפ לשמירה ידנית
+      // אין תמיכה ב-beacon וגם ה-fetch לא הצליח — לא מאבדים את הלידה, מפנים לוואטסאפ לשמירה ידנית
       btn.disabled = false; btn.textContent = origText;
       if (confirm("רגע, השרת שלנו מתעורר וזה לוקח רגע 🙏\nהכי בטוח: הצטרפי עכשיו לקבוצת הוואטסאפ ואני שומרת לך מקום ידנית.\nלפתוח את הקבוצה?")) {
         window.open(WA_GROUP, "_blank");
       }
     }
-    // ניסיונות חוזרים סבלניים — שרת ה-free של Render מתעורר משינה (cold start ~30-60ש')
-    // מטפל גם בשגיאות רשת וגם בתגובות 502/503 בזמן ההתעוררות.
-    var delays = [0, 3000, 6000, 10000, 12000]; // עד ~30 שניות של ניסיונות
+    // ניסיונות חוזרים סבלניים — שרת ה-free של Render מתעורר משינה (cold start).
+    var delays = [0, 2500, 5000, 8000]; // ניסיונות חוזרים ל-fetch
     function attempt(i){
       var done = false;                                   // שומר-סף: כל ניסיון מסתיים פעם אחת בלבד
       var ctrl = ("AbortController" in window) ? new AbortController() : null;
       // שעון-קיר שתמיד קיים — גם בדפדפנים בלי AbortController (וובוויו של אינסטגרם/וואטסאפ).
-      // בלעדיו, fetch שנתקע היה משאיר את הכפתור "רק רגע" לנצח.
       function moveOn(){
         if(done) return; done = true;
         if(ctrl){ try{ ctrl.abort(); }catch(e){} }
+        // אם ה-beacon כבר נכנס לתור — הלידה נלכדה, מסיימים בהצלחה מיד (בלי לטחון עוד ניסיונות)
+        if(beaconed){ showSuccess(); return; }
         if(i+1 < delays.length){ setTimeout(function(){ attempt(i+1); }, delays[i+1]); }
         else { fail(); }
       }
-      var t = setTimeout(moveOn, 12000);
+      var t = setTimeout(moveOn, 8000);
       fetch(SIGNUP_ENDPOINT, {
-        method:"POST", headers:{"Content-Type":"application/json"},
-        body: JSON.stringify(data), signal: ctrl ? ctrl.signal : undefined
+        method:"POST", headers:{"Content-Type":"application/x-www-form-urlencoded"},
+        body: bodyStr, signal: ctrl ? ctrl.signal : undefined
       })
       .then(function(r){ if(!r.ok){ throw new Error("http "+r.status); } return r.json(); })
       .then(function(j){
