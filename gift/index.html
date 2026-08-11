@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>המתנה הנסתרת שלך · אמא משקיעה</title>
+<style>
+  :root{
+    --canvas:#FBFAF7; --card:#FFFFFF; --ink:#191A2E; --ink-soft:#6B6B7B;
+    --pink:#EF55A5; --pink-soft:#FCE1EF; --lime:#CCD537; --blue:#8C9EFF; --sky:#BEE0F2;
+    --line:#ECE7DF;
+    --font:'Heebo','Assistant',system-ui,-apple-system,'Segoe UI',Arial,sans-serif;
+    color-scheme:light;
+  }
+  *{box-sizing:border-box; margin:0; padding:0}
+  html,body{min-height:100%}
+  body{font-family:var(--font); background:var(--canvas); color:var(--ink); direction:rtl;
+    -webkit-font-smoothing:antialiased; line-height:1.5; padding:0; overflow-x:hidden}
+  .bg-blob{position:fixed; border-radius:50%; filter:blur(8px); opacity:.4; z-index:0; pointer-events:none}
+  .bg-blob.a{width:60vw; height:60vw; max-width:520px; max-height:520px; background:var(--sky); top:-18vw; right:-16vw}
+  .bg-blob.b{width:46vw; height:46vw; max-width:420px; max-height:420px; background:var(--pink); opacity:.12; bottom:-14vw; left:-12vw}
+
+  .wrap{position:relative; z-index:1; max-width:660px; margin:0 auto; padding:26px 20px 60px; min-height:100vh;
+    display:flex; flex-direction:column; justify-content:center}
+  .brand{text-align:center; font-weight:800; letter-spacing:.02em; font-size:.95rem; color:var(--ink); margin-bottom:18px}
+  .brand small{display:block; font-weight:600; font-size:.7rem; letter-spacing:.16em; color:var(--ink-soft); margin-top:3px}
+
+  .card{background:var(--card); border:1px solid var(--line); border-radius:26px; padding:clamp(24px,5vw,42px);
+    box-shadow:0 30px 70px -44px rgba(25,26,46,.4)}
+
+  .eyebrow{display:inline-flex; align-items:center; gap:.5em; font-size:.76rem; font-weight:800; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--pink); margin-bottom:14px}
+  h1{font-size:clamp(1.9rem,6vw,2.7rem); font-weight:800; line-height:1.08; letter-spacing:-.02em; text-wrap:balance}
+  h1 em{font-style:normal; color:var(--pink)}
+  h2{font-size:clamp(1.35rem,4.6vw,1.9rem); font-weight:800; line-height:1.15; letter-spacing:-.01em; text-wrap:balance}
+  .lede{font-size:clamp(1rem,2.6vw,1.18rem); color:var(--ink-soft); line-height:1.6; margin-top:12px; text-wrap:balance}
+  .step-note{font-size:clamp(.95rem,2.4vw,1.08rem); color:var(--ink-soft); line-height:1.6; margin-top:8px}
+
+  .meta{display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin:22px 0 6px}
+  .chip{background:var(--pink-soft); color:var(--ink); font-weight:700; font-size:.9rem; padding:8px 16px; border-radius:100px}
+
+  .field{margin-top:18px}
+  .field > label{display:block; font-weight:800; font-size:1.02rem; margin-bottom:4px}
+  .field .hint{font-size:.86rem; color:var(--ink-soft); margin-bottom:8px; line-height:1.45}
+  input[type=text], textarea{width:100%; font-family:inherit; font-size:1rem; color:var(--ink); background:#fff;
+    border:1.5px solid var(--line); border-radius:14px; padding:12px 14px; transition:border-color .15s, box-shadow .15s}
+  input[type=text]:focus, textarea:focus{outline:none; border-color:var(--pink); box-shadow:0 0 0 3px var(--pink-soft)}
+  textarea{resize:vertical; min-height:70px; line-height:1.5}
+  .mini{display:flex; flex-direction:column; gap:10px}
+
+  .lens{border:1px solid var(--line); border-radius:18px; padding:16px 16px 18px; margin-top:16px; background:#fff}
+  .lens .lnum{display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; border-radius:9px;
+    font-weight:800; color:var(--ink); margin-bottom:8px}
+  .lens.l1 .lnum{background:var(--sky)} .lens.l2 .lnum{background:var(--lime)} .lens.l3 .lnum{background:var(--pink-soft)}
+  .lens h3{font-size:1.08rem; font-weight:800; margin-bottom:2px}
+  .lens .hint{font-size:.86rem; color:var(--ink-soft); margin-bottom:10px; line-height:1.45}
+
+  .recap{background:var(--canvas); border:1px dashed var(--line); border-radius:14px; padding:12px 14px; margin-top:14px; font-size:.92rem}
+  .recap b{color:var(--pink)}
+  .recap ul{list-style:none; margin-top:6px; display:flex; flex-direction:column; gap:4px}
+  .recap li{padding-right:14px; position:relative}
+  .recap li::before{content:"•"; color:var(--pink); position:absolute; right:0}
+
+  .nav{display:flex; gap:12px; align-items:center; margin-top:26px}
+  .btn{cursor:pointer; border:none; font-family:inherit; font-weight:800; font-size:1.02rem; padding:14px 26px; border-radius:100px;
+    transition:transform .12s ease, opacity .2s, background .2s; display:inline-flex; align-items:center; gap:.5em}
+  .btn:active{transform:translateY(1px)}
+  .btn.primary{background:var(--ink); color:var(--canvas); flex:1; justify-content:center}
+  .btn.primary:hover{background:#000}
+  .btn.pink{background:var(--pink); color:#fff; flex:1; justify-content:center}
+  .btn.ghost{background:transparent; color:var(--ink-soft); padding:14px 12px}
+  .btn:focus-visible{outline:3px solid var(--blue); outline-offset:2px}
+
+  .progress-row{display:flex; align-items:center; gap:10px; margin-bottom:18px}
+  .pbar{flex:1; height:8px; background:#eee6db; border-radius:100px; overflow:hidden}
+  .pfill{height:100%; width:0; background:linear-gradient(90deg,var(--pink),var(--lime)); border-radius:100px; transition:width .4s ease}
+  .pstep{font-size:.8rem; font-weight:800; color:var(--ink-soft); white-space:nowrap}
+
+  .screen{display:none; animation:rise .4s cubic-bezier(.2,.7,.2,1)}
+  .screen.on{display:block}
+  @keyframes rise{from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:none}}
+
+  /* result */
+  .result-card{background:linear-gradient(160deg,#fff, #fff 60%, var(--pink-soft)); border:1px solid var(--line);
+    border-radius:22px; padding:clamp(20px,4vw,30px); margin-top:18px}
+  .rline{padding:14px 0; border-bottom:1px solid var(--line)}
+  .rline:last-child{border-bottom:none}
+  .rline .rlabel{font-size:.78rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:var(--pink)}
+  .rline .rval{font-size:clamp(1.15rem,3.4vw,1.5rem); font-weight:800; line-height:1.25; margin-top:4px; word-break:break-word}
+  .sentence{font-size:clamp(1.2rem,3.8vw,1.65rem); font-weight:800; line-height:1.4; text-align:center; margin:6px 0 2px}
+  .sentence .hl{background:var(--lime); padding:0 .18em; border-radius:6px}
+
+  .cta{margin-top:22px; text-align:center}
+  .cta .kicker{font-weight:700; color:var(--ink-soft); font-size:.98rem; margin-bottom:12px; line-height:1.5}
+  .cta a.btn{width:100%; justify-content:center; text-decoration:none}
+  .row2{display:flex; gap:10px; margin-top:12px}
+  .row2 .btn{flex:1; justify-content:center; background:#fff; border:1.5px solid var(--line); color:var(--ink); font-size:.95rem; padding:12px}
+  .toast{position:fixed; bottom:18px; left:50%; transform:translateX(-50%) translateY(20px); background:var(--ink); color:#fff;
+    font-weight:700; padding:12px 22px; border-radius:100px; opacity:0; transition:all .3s; z-index:20; font-size:.95rem}
+  .toast.show{opacity:1; transform:translateX(-50%) translateY(0)}
+
+  .foot{text-align:center; margin-top:26px; font-size:.82rem; color:var(--ink-soft)}
+  .heart{color:var(--pink)}
+
+  /* pilot calculator */
+  .calc{margin-top:20px; background:var(--ink); color:#fff; border-radius:22px; padding:clamp(20px,4vw,28px)}
+  .calc h3{font-size:clamp(1.2rem,3.6vw,1.5rem); font-weight:800; text-align:center; line-height:1.2}
+  .calc-note{font-size:.9rem; color:#c9c7d6; text-align:center; margin:8px 0 14px}
+  .chips{display:flex; flex-wrap:wrap; gap:8px; justify-content:center}
+  .chips button{cursor:pointer; border:1.5px solid rgba(255,255,255,.22); background:rgba(255,255,255,.06); color:#fff;
+    font-family:inherit; font-weight:700; font-size:.85rem; padding:8px 14px; border-radius:100px; transition:all .15s}
+  .chips button:hover{border-color:var(--lime)}
+  .chips button.sel{background:var(--lime); color:var(--ink); border-color:var(--lime)}
+  .calc-price{display:flex; align-items:center; justify-content:center; gap:10px; margin:16px 0 6px; font-weight:700}
+  .pinput{display:inline-flex; align-items:center; gap:6px; background:#fff; color:var(--ink); border-radius:12px; padding:6px 12px; font-weight:800}
+  .pinput input{width:96px; border:none; outline:none; font-family:inherit; font-size:1.1rem; font-weight:800; color:var(--ink); text-align:center}
+  .calc-out{display:flex; gap:12px; margin-top:16px}
+  .calc-out .co{flex:1; background:rgba(255,255,255,.07); border-radius:16px; padding:14px 10px; text-align:center}
+  .calc-out .co.big{background:var(--pink)}
+  .calc-out .con{font-size:.82rem; font-weight:700; color:#d8d6e2; margin-bottom:4px}
+  .calc-out .co.big .con{color:#fff}
+  .calc-out .cov{font-size:clamp(1.5rem,5.5vw,2.2rem); font-weight:800; letter-spacing:-.02em; font-variant-numeric:tabular-nums}
+  .calc-punch{margin-top:14px; text-align:center; font-weight:800; font-size:clamp(1rem,2.8vw,1.15rem); color:var(--lime); line-height:1.4}
+  @media print{ .nav,.cta,.row2,.progress-row,.bg-blob{display:none!important} body{background:#fff} .card{box-shadow:none;border:none} }
+</style>
+</head>
+<body>
+<div class="bg-blob a"></div><div class="bg-blob b"></div>
+<div class="wrap">
+  <div class="brand">אמא משקיעה 💛<small>צמיחה · חופש · התפתחות</small></div>
+
+  <div class="card">
+    <!-- progress (hidden on cover/result) -->
+    <div class="progress-row" id="progressRow" style="display:none">
+      <div class="pbar"><div class="pfill" id="pfill"></div></div>
+      <div class="pstep" id="pstep">שלב 1 מתוך 4</div>
+    </div>
+
+    <!-- COVER -->
+    <section class="screen on" id="s0">
+      <div class="eyebrow">🎁 מתנה מהוובינר · מקור ההכנסה הנוסף</div>
+      <h1>המתנה ה<em>נסתרת</em> שלך</h1>
+      <p class="lede">שאלון מונחה קצר שיחשוף את הדבר שכבר יש בך ושווה כסף, ולאיזה קהל הוא שווה הכי הרבה. בלי לנחש. עם מה שבאמת שלך.</p>
+      <div class="meta">
+        <span class="chip">⏱ 15 דקות</span>
+        <span class="chip">🪜 4 שלבים</span>
+        <span class="chip">📝 תוצר אישי ביד</span>
+      </div>
+      <p class="step-note">בסוף השאלון יהיה לך משפט אחד ברור: <b>"אני עוזרת ל___ ב___".</b> זה הזרע של ערוץ ההכנסה הנוסף שלך.</p>
+      <div class="nav">
+        <button class="btn pink" onclick="start()">מתחילות ✨</button>
+      </div>
+    </section>
+
+    <!-- STEP 1: THREE LENSES -->
+    <section class="screen" id="s1">
+      <div class="eyebrow">שלב 1 · המתנה השקופה</div>
+      <h2>מה שכבר בך, ואת לא רואה</h2>
+      <p class="step-note">הדבר הכי חזק שלך שקוף בעינייך, בדיוק כי הוא כל כך קל לך. שלוש עדשות יעזרו לך לראות אותו. כתבי בקצרה, בלי להתאמץ, מה שעולה ראשון.</p>
+
+      <div class="lens l1">
+        <div class="lnum">1</div>
+        <h3>מה קל לך, וקשה לאחרים?</h3>
+        <div class="hint">הדבר שאנשים אומרים עליו "וואו, איך את עושה את זה?"</div>
+        <div class="mini">
+          <input type="text" data-k="easy1" placeholder="למשל: לסדר בלגן בתוך שעה">
+          <input type="text" data-k="easy2" placeholder="עוד דבר שקל לך…">
+          <input type="text" data-k="easy3" placeholder="ועוד אחד…">
+        </div>
+      </div>
+
+      <div class="lens l2">
+        <div class="lnum">2</div>
+        <h3>על מה כבר מבקשים ממך עצה?</h3>
+        <div class="hint">חברות, משפחה, קבוצות. אם כבר שואלים אותך, יש שם ביקוש.</div>
+        <div class="mini">
+          <input type="text" data-k="ask1" placeholder="על מה פונים אלייך שוב ושוב?">
+          <input type="text" data-k="ask2" placeholder="עוד נושא…">
+        </div>
+      </div>
+
+      <div class="lens l3">
+        <div class="lnum">3</div>
+        <h3>מה היית עושה גם בלי תשלום?</h3>
+        <div class="hint">מה שאת יכולה לדבר עליו שעות, מרוב אהבה.</div>
+        <div class="mini">
+          <input type="text" data-k="love1" placeholder="הנושא שמדליק אותך…">
+          <input type="text" data-k="love2" placeholder="עוד אחד…">
+        </div>
+      </div>
+
+      <div class="nav">
+        <button class="btn ghost" onclick="go(0)">→ חזרה</button>
+        <button class="btn primary" onclick="go(2)">הבא ←</button>
+      </div>
+    </section>
+
+    <!-- STEP 2: NAME THE GIFT -->
+    <section class="screen" id="s2">
+      <div class="eyebrow">שלב 2 · נקודת הזוהר</div>
+      <h2>איפה שלוש העדשות נפגשות</h2>
+      <p class="step-note">תסתכלי על מה שכתבת. איזה נושא או יכולת חוזר על עצמו, או מחבר בין כמה מהם? שם, בדיוק שם, נמצאת המתנה שלך.</p>
+
+      <div class="recap" id="recap1"></div>
+
+      <div class="field">
+        <label>המתנה הנסתרת שלי, במילה או שתיים</label>
+        <div class="hint">לא צריך מושלם. מה שמרגיש הכי "זאת אני".</div>
+        <input type="text" data-k="gift" placeholder="למשל: לעשות סדר · לבשל בריא בקלות · ליווי אחרי לידה">
+      </div>
+      <div class="field">
+        <label>ובמשפט: מה בעצם את יודעת לתת?</label>
+        <input type="text" data-k="giftDesc" placeholder="למשל: לעזור לאמהות לסדר את הבית ואת הראש">
+      </div>
+
+      <div class="nav">
+        <button class="btn ghost" onclick="go(1)">→ חזרה</button>
+        <button class="btn primary" onclick="go(3)">הבא ←</button>
+      </div>
+    </section>
+
+    <!-- STEP 3: AUDIENCES -->
+    <section class="screen" id="s3">
+      <div class="eyebrow">שלב 3 · למי זה שווה</div>
+      <h2>מי צריך את המתנה שלך?</h2>
+      <p class="step-note">אותה מתנה שווה סכומים שונים לקהלים שונים. בואי נמצא את מי שסובל מהכאב, כבר מחפש פתרון, ויכול לשלם עליו.</p>
+
+      <div class="field">
+        <label>מי הכי סובל מהבעיה שהמתנה שלך פותרת?</label>
+        <div class="hint">קבוצה אחת ספציפית. לא "כולם".</div>
+        <input type="text" data-k="aud" placeholder="למשל: אמהות טריות · עצמאיות קטנות · זוגות לפני חתונה">
+      </div>
+      <div class="field">
+        <label>נקודה A: מה מציק להן היום?</label>
+        <input type="text" data-k="pain" placeholder="הכאב / התסכול שהן חיות איתו">
+      </div>
+      <div class="field">
+        <label>נקודה B: לאן הן רוצות להגיע?</label>
+        <input type="text" data-k="dream" placeholder="החלום / התוצאה שהן משתוקקות אליה">
+      </div>
+      <div class="field">
+        <label>על מה כבר משלמות עכשיו כדי לפתור את זה?</label>
+        <div class="hint">אם כבר מוציאות כסף על משהו קרוב, יש כאן שוק.</div>
+        <input type="text" data-k="pays" placeholder="קורסים, מוצרים, שירותים שהן כבר קונות">
+      </div>
+
+      <div class="nav">
+        <button class="btn ghost" onclick="go(2)">→ חזרה</button>
+        <button class="btn primary" onclick="go(4)">הבא ←</button>
+      </div>
+    </section>
+
+    <!-- STEP 4: THE SENTENCE -->
+    <section class="screen" id="s4">
+      <div class="eyebrow">שלב 4 · המשפט שלך</div>
+      <h2>מחברות הכל למשפט אחד</h2>
+      <p class="step-note">זהו. יש לך את שני החלקים. עכשיו נחבר אותם למשפט שיהיה הזרע של ערוץ ההכנסה שלך. אפשר לדייק, זה בעיפרון.</p>
+
+      <div class="recap" id="recap2"></div>
+
+      <div class="field">
+        <label>ולמה דווקא את? (הדרך שעברת)</label>
+        <div class="hint">כי היית שם בעצמך, כי למדת את זה בדרך הקשה, כי זה הטבע שלך…</div>
+        <input type="text" data-k="why" placeholder="כי עברתי את זה בעצמי ו…">
+      </div>
+
+      <div class="nav">
+        <button class="btn ghost" onclick="go(3)">→ חזרה</button>
+        <button class="btn pink" onclick="finish()">גלי את התוצאה שלי 🎉</button>
+      </div>
+    </section>
+
+    <!-- RESULT -->
+    <section class="screen" id="s5">
+      <div class="eyebrow">🎉 התוצאה שלך</div>
+      <h2>הנה מה שכבר בך</h2>
+      <div class="result-card">
+        <div class="rline"><div class="rlabel">המתנה הנסתרת שלך</div><div class="rval" id="rGift"></div></div>
+        <div class="rline"><div class="rlabel">קהל היעד ששווה לה הכי הרבה</div><div class="rval" id="rAud"></div></div>
+        <div class="rline">
+          <div class="rlabel" style="margin-bottom:8px">המשפט שלך</div>
+          <div class="sentence" id="rSentence"></div>
+        </div>
+      </div>
+
+      <div class="calc">
+        <h3>וכמה זה שווה כבר בפיילוט הראשון?</h3>
+        <div class="calc-note">בחרי מחיר פיילוט לפי התחום שלך (אפשר לשנות ידנית):</div>
+        <div class="chips" id="priceChips">
+          <button data-p="1000">יצירה / סדנאות · ₪1,000</button>
+          <button data-p="1200">בריאות / תנועה · ₪1,200</button>
+          <button data-p="1500">ליווי / קואצ׳ינג · ₪1,500</button>
+          <button data-p="2000">דולה / טיפול · ₪2,000</button>
+          <button data-p="2500">פיננסי / עסקי / ייעוץ · ₪2,500</button>
+        </div>
+        <div class="calc-price">
+          <label>מחיר לפיילוט:</label>
+          <span class="pinput">₪ <input type="number" id="calcPrice" min="0" step="100" value="1000"></span>
+        </div>
+        <div class="calc-out">
+          <div class="co"><div class="con">10 הראשונות</div><div class="cov" id="out10">₪10,000</div></div>
+          <div class="co big"><div class="con">20 הראשונות</div><div class="cov" id="out20">₪20,000</div></div>
+        </div>
+        <div class="calc-punch">וזה רק מהפיילוט הראשון. עוד לפני שיצאת לקהל הרחב. 🤯</div>
+      </div>
+
+      <div class="cta">
+        <div class="kicker">זה הזרע. עכשיו הופכים אותו לערוץ הכנסה אמיתי, יחד, בלי סיכון. רוצה שנבדוק אם זה מדויק לך?</div>
+        <a class="btn pink" href="https://calendly.com/adi-somech/meet-with-me-1" target="_blank" rel="noopener">לשיחת התאמה אישית איתי 📞</a>
+        <div class="row2">
+          <button class="btn" onclick="copyResult()">📋 העתקת התוצאה</button>
+          <button class="btn" onclick="window.print()">🖨️ שמירה / הדפסה</button>
+        </div>
+        <button class="btn ghost" style="width:100%;margin-top:10px" onclick="go(1)">↩︎ לעריכה מחדש</button>
+      </div>
+      <div class="foot">בנוי באהבה על ידי אמא משקיעה <span class="heart">💛</span></div>
+    </section>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+  const A = {}; // answers
+  const KEY = 'mominvest_hidden_gift';
+  try{ Object.assign(A, JSON.parse(localStorage.getItem(KEY)||'{}')); }catch(e){}
+  // restore inputs
+  function restore(){ document.querySelectorAll('[data-k]').forEach(el=>{ if(A[el.dataset.k]!=null) el.value=A[el.dataset.k]; }); }
+  function bind(){ document.querySelectorAll('[data-k]').forEach(el=>{
+    el.addEventListener('input', ()=>{ A[el.dataset.k]=el.value; try{localStorage.setItem(KEY,JSON.stringify(A));}catch(e){} });
+  }); }
+  restore(); bind();
+
+  let cur = 0;
+  const screens = ['s0','s1','s2','s3','s4','s5'];
+  function show(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on')); document.getElementById(id).classList.add('on'); }
+  function updProgress(){
+    const row=document.getElementById('progressRow');
+    const showP = cur>=1 && cur<=4;
+    row.style.display = showP ? 'flex':'none';
+    if(showP){ document.getElementById('pfill').style.width=(cur/4*100)+'%'; document.getElementById('pstep').textContent='שלב '+cur+' מתוך 4'; }
+  }
+  function go(n){ cur=n; show(screens[n]); updProgress(); if(n===2)buildRecap1(); if(n===4)buildRecap2(); window.scrollTo({top:0,behavior:'smooth'}); }
+  function start(){ go(1); }
+
+  function nonEmpty(keys){ return keys.map(k=>(A[k]||'').trim()).filter(Boolean); }
+
+  function buildRecap1(){
+    const items = nonEmpty(['easy1','easy2','easy3','ask1','ask2','love1','love2']);
+    const el=document.getElementById('recap1');
+    if(!items.length){ el.innerHTML='<b>טיפ:</b> חזרי שלב אחורה ומלאי כמה שורות, וכאן יופיע מה שכתבת כדי לזהות את החוט המקשר.'; return; }
+    el.innerHTML='<b>מה שכתבת עד עכשיו:</b><ul>'+items.map(t=>'<li>'+esc(t)+'</li>').join('')+'</ul>';
+  }
+  function buildRecap2(){
+    const g=(A.gift||'').trim()||'(המתנה שלך)';
+    const gd=(A.giftDesc||'').trim();
+    const au=(A.aud||'').trim()||'(קהל היעד)';
+    const el=document.getElementById('recap2');
+    el.innerHTML='<b>נזכיר לך:</b><ul><li>המתנה: '+esc(g)+(gd?' — '+esc(gd):'')+'</li><li>הקהל: '+esc(au)+'</li></ul>';
+  }
+
+  function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+  function finish(){
+    const gift = (A.giftDesc||'').trim() || (A.gift||'').trim() || 'לתת את מה שהכי טבעי לך';
+    const giftShort = (A.gift||'').trim() || gift;
+    const aud = (A.aud||'').trim() || 'הקהל שהכי צריך אותך';
+    const dream = (A.dream||'').trim();
+    const why = (A.why||'').trim();
+    document.getElementById('rGift').textContent = giftShort;
+    document.getElementById('rAud').textContent = aud;
+    // sentence: אני עוזרת ל[aud] ב[dream/gift] כי [why]
+    const middle = dream || gift;
+    let sen = 'אני עוזרת <span class="hl">ל'+esc(aud)+'</span> <span class="hl">'+esc(middle)+'</span>';
+    if(why) sen += ' כי '+esc(why);
+    document.getElementById('rSentence').innerHTML = sen;
+    go(5);
+  }
+
+  function plainResult(){
+    const giftShort=(A.gift||'').trim()||(A.giftDesc||'').trim()||'';
+    const aud=(A.aud||'').trim()||'';
+    const dream=(A.dream||'').trim(); const gift=(A.giftDesc||'').trim()||giftShort; const why=(A.why||'').trim();
+    const sen='אני עוזרת ל'+aud+' '+(dream||gift)+(why?' כי '+why:'');
+    return 'המתנה הנסתרת שלי מהוובינר של אמא משקיעה\n\n'
+      + '🎁 המתנה הנסתרת שלי: '+giftShort+'\n'
+      + '🎯 קהל היעד ששווה לה הכי הרבה: '+aud+'\n\n'
+      + '✨ המשפט שלי: '+sen+'\n\n'
+      + 'הצעד הבא: שיחת התאמה אישית → https://calendly.com/adi-somech/meet-with-me-1';
+  }
+  function toast(t){ const el=document.getElementById('toast'); el.textContent=t; el.classList.add('show'); setTimeout(()=>el.classList.remove('show'),2200); }
+  function copyResult(){ const t=plainResult();
+    if(navigator.clipboard){ navigator.clipboard.writeText(t).then(()=>toast('הועתק! אפשר להדביק ולשמור 💛')).catch(()=>fallbackCopy(t)); }
+    else fallbackCopy(t);
+  }
+  function fallbackCopy(t){ const ta=document.createElement('textarea'); ta.value=t; document.body.appendChild(ta); ta.select();
+    try{document.execCommand('copy'); toast('הועתק! 💛');}catch(e){toast('סמני והעתיקי ידנית');} ta.remove(); }
+
+  // pilot calculator
+  const priceEl=document.getElementById('calcPrice');
+  function fmt(n){ return '₪'+Math.round(n).toLocaleString('he-IL'); }
+  function calc(){ const p=Math.max(0, +priceEl.value||0);
+    document.getElementById('out10').textContent=fmt(p*10);
+    document.getElementById('out20').textContent=fmt(p*20);
+    document.querySelectorAll('#priceChips button').forEach(b=>b.classList.toggle('sel', +b.dataset.p===p));
+  }
+  document.querySelectorAll('#priceChips button').forEach(b=>b.addEventListener('click',()=>{ priceEl.value=b.dataset.p; calc(); }));
+  priceEl.addEventListener('input', calc);
+  calc();
+</script>
+</body>
+</html>
